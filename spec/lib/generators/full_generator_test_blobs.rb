@@ -92,6 +92,135 @@ class FullGeneratorTestBlobs
     BLOB
   end
 
+  def self.pluralized_action_blob
+    <<~BLOB
+      # frozen_string_literal: true
+
+      class FetchUsers
+        extend ::LightService::Action
+
+        executed do |ctx|
+        end
+
+        rolled_back do |ctx|
+        end
+      end
+    BLOB
+  end
+
+  def self.pluralized_action_spec_blob
+    <<~BLOB
+      # frozen_string_literal: true
+
+      require 'rails_helper'
+
+      RSpec.describe FetchUsers, type: :action do
+        subject { described_class.execute(ctx) }
+
+        let(:ctx) do
+          {
+          }
+        end
+
+        context "when executed" do
+          xit "is expected to be successful" do
+            expect(subject).to be_a_success
+          end
+        end
+      end
+    BLOB
+  end
+
+  # There's some weird whitespace issue which prevents
+  # using HEREDOCS :(
+  def self.namespaced_pluralized_action_blob
+    "# frozen_string_literal: true\n" \
+      "\n" \
+      "module Users\n" \
+      "  class FetchUsers\n" \
+      "    extend ::LightService::Action\n" \
+      "\n" \
+      "    executed do |ctx|\n" \
+      "    end\n" \
+      "\n" \
+      "    rolled_back do |ctx|\n" \
+      "    end\n" \
+      "  end\n" \
+      "end"
+  end
+
+  def self.namespaced_pluralized_action_spec_blob
+    <<~BLOB
+      # frozen_string_literal: true
+
+      require 'rails_helper'
+
+      RSpec.describe Users::FetchUsers, type: :action do
+        subject { described_class.execute(ctx) }
+
+        let(:ctx) do
+          {
+          }
+        end
+
+        context "when executed" do
+          xit "is expected to be successful" do
+            expect(subject).to be_a_success
+          end
+        end
+      end
+    BLOB
+  end
+
+  def self.pluralized_organizer_blob
+    <<~BLOB
+      # frozen_string_literal: true
+
+      class FetchUsers
+        extend ::LightService::Organizer
+
+        def self.call(params)
+          with(
+            #foo: params[:foo],
+            #bar: params[:bar]
+          ).reduce(actions)
+        end
+
+        def self.actions
+          [
+            #OneAction,
+            #TwoAction,
+          ]
+        end
+      end
+    BLOB
+  end
+
+  def self.pluralized_organizer_spec_blob
+    <<~BLOB
+      # frozen_string_literal: true
+
+      require 'rails_helper'
+
+      RSpec.describe FetchUsers, type: :organizer do
+        subject { described_class.call(ctx) }
+
+        let(:ctx) do
+          {
+            #foo: 'something foo',
+            #bar: { baz: qux },
+          }
+        end
+
+        context "when called" do
+          xit "is expected to be successful" do
+            expect(subject).to be_a_success
+          end
+        end
+      end
+    BLOB
+  end
+
   def self.simple_organizer_blob
     <<~BLOB
       # frozen_string_literal: true
